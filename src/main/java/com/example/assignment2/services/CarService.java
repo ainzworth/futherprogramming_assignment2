@@ -22,4 +22,5 @@ public class CarService {
     public void saveCar(Car car){
         sessionFactory.getCurrentSession().save(car);
     }
+    //hello
 }
