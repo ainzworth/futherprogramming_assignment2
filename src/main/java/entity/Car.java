@@ -1,18 +1,20 @@
 package entity;
 
+
 import org.springframework.beans.factory.annotation.Autowired;
+import services.DriverService;
 
 import javax.persistence.*;
 
 import static javax.persistence.GenerationType.SEQUENCE;
 
 @Entity
-@Table(name = "car")
+@Table(name = "Car")
 public class Car {
     @Id
     @Column(name = "VIN")
     @SequenceGenerator(
-            name = "driver_sequence",
+            name = "car_sequence",
             sequenceName = "car_sequence",
             allocationSize = 1
     )
@@ -42,6 +44,11 @@ public class Car {
 
     @OneToOne(mappedBy = "car")
     private Driver driver;
+    @Transient
+    @Autowired
+    private DriverService driverService;
+
+
 
     public Car(String VIN, String make, String model, String color, String convertible, String rating, String licencePlate,
                Boolean availability, String ratePerKilo, Driver driver) {
@@ -55,6 +62,13 @@ public class Car {
         this.availability = availability;
         this.ratePerKilo = ratePerKilo;
         this.driver = driver;
+    }
+    public DriverService getDriverService() {
+        return driverService;
+    }
+
+    public void setDriverService(DriverService driverService) {
+        this.driverService = driverService;
     }
 
 

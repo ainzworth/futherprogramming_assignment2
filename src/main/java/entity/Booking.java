@@ -4,10 +4,26 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 
 import javax.persistence.*;
+import javax.transaction.Transactional;
 import java.util.Date;
 
-public class Booking {
+import static javax.persistence.GenerationType.SEQUENCE;
 
+//@Entity
+//@Table(name = "booking")
+public class Booking {
+//    @Id
+//    @Column(name = "booking_id")
+//    @SequenceGenerator(
+//            name = "booking_sequence",
+//            sequenceName = "booking_sequence",
+//            allocationSize = 1
+//    )
+//    @GeneratedValue(
+//            strategy = SEQUENCE,
+//            generator = "booking_sequence"
+//
+//    )
     private Long id;
 
     private String startingLocation;
@@ -19,6 +35,7 @@ public class Booking {
     private Date dropDate;
 
     private Double distance;
+
 
     private Invoice invoice;
 

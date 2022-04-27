@@ -9,7 +9,7 @@ import javax.sound.midi.Sequence;
 import static javax.persistence.GenerationType.SEQUENCE;
 
 @Entity
-@Table(name = "driver")
+@Table(name = "Driver")
 public class Driver {
     @Id
     @SequenceGenerator(
