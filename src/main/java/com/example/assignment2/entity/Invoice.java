@@ -1,18 +1,13 @@
-package entity;
+package com.example.assignment2.entity;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.annotation.Id;
-
-import javax.persistence.*;
-import javax.transaction.Transactional;
 //@Entity
 //@Table(name = "Invoice")
 public class Invoice {
 
     private Long id;
-    @Autowired
+
     private Customer customer;
-    @Autowired
+
     private Driver driver;
     private double totalChange;
 

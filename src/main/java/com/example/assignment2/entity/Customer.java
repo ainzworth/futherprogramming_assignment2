@@ -1,21 +1,25 @@
-package entity;
+package com.example.assignment2.entity;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
+import javax.persistence.*;
+import java.util.Collection;
+//@Entity
+//@Table(name = "customer")
 public class Customer {
-
+//    @Id
+//    @GeneratedValue()
     private Long id;
     private String name;
-    @Autowired
-    private Booking booking;
+//    @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL)
+    private Collection<Booking> booking;
     public Customer(){
 
     }
 
-    public Customer(Long id, String name, Booking booking) {
+    public Customer(Long id, String name) {
         this.id = id;
         this.name = name;
-        this.booking = booking;
     }
 
     public Long getId() {
@@ -34,11 +38,5 @@ public class Customer {
         this.name = name;
     }
 
-    public Booking getBooking() {
-        return booking;
-    }
 
-    public void setBooking(Booking booking) {
-        this.booking = booking;
-    }
 }

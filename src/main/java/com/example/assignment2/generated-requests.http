@@ -1,0 +1,14 @@
+
+POST http://localhost:8080/api/v1/car
+content-type: application/json
+
+{
+  "make": "lao",
+  "availability" : true,
+  "color" : "red",
+  "convertible": "true",
+  "licence_plate": "121212",
+  "model": "S1212",
+  "rate_per_kilo": "1212",
+  "rating": "30"
+}

@@ -1,13 +1,14 @@
-package entity;
+package com.example.assignment2.entity;
 
-import org.springframework.beans.factory.annotation.Autowired;
 
+import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.Transient;
 
 import javax.persistence.*;
-import javax.transaction.Transactional;
 import java.util.Date;
 
 import static javax.persistence.GenerationType.SEQUENCE;
+
 
 //@Entity
 //@Table(name = "booking")
@@ -37,7 +38,12 @@ public class Booking {
     private Double distance;
 
 
-    private Invoice invoice;
+//    @ManyToOne
+//    @JoinColumn(name = "")
+    private Customer customer;
+
+
+//    private Invoice invoice;
 
 
     public Booking(Long id,
@@ -53,7 +59,7 @@ public class Booking {
         this.pickDate = pickDate;
         this.dropDate = dropDate;
         this.distance = distance;
-        this.invoice = invoice;
+//        this.invoice = invoice;
     }
 
     public Booking() {
@@ -108,11 +114,11 @@ public class Booking {
         this.distance = distance;
     }
 
-    public Invoice getInvoice() {
-        return invoice;
-    }
-
-    public void setInvoice(Invoice invoice) {
-        this.invoice = invoice;
-    }
+//    public Invoice getInvoice() {
+//        return invoice;
+//    }
+//
+//    public void setInvoice(Invoice invoice) {
+//        this.invoice = invoice;
+//    }
 }

@@ -1,15 +1,9 @@
-package entity;
-
-
-import org.springframework.beans.factory.annotation.Autowired;
+package com.example.assignment2.entity;
 
 import javax.persistence.*;
-import javax.sound.midi.Sequence;
-
-import static javax.persistence.GenerationType.SEQUENCE;
 
 @Entity
-@Table(name = "Driver")
+@Table
 public class Driver {
     @Id
     @SequenceGenerator(
@@ -18,26 +12,28 @@ public class Driver {
             allocationSize = 1
     )
     @GeneratedValue(
-            strategy = SEQUENCE,
+            strategy = GenerationType.SEQUENCE,
             generator = "driver_sequence"
-
     )
+
     private Long id;
     private String licenceNum;
     private String phoneNumber;
     private double rating;
 
+
     @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "car_VIN", referencedColumnName = "VIN")
+    @JoinColumn(name = "Car_id", referencedColumnName = "VIN")
     private Car car;
 
-    public Driver(Long id, String licenceNum, String phoneNumber, double rating, Car car) {
-        this.id = id;
+    public Driver(){}
+    public Driver( String licenceNum, String phoneNumber, double rating, Car car) {
         this.licenceNum = licenceNum;
         this.phoneNumber = phoneNumber;
         this.rating = rating;
         this.car = car;
     }
+
 
     public Car getCar() {
         return car;
@@ -47,7 +43,6 @@ public class Driver {
         this.car = car;
     }
 
-    public Driver(){}
 
 
     public Long getId() {

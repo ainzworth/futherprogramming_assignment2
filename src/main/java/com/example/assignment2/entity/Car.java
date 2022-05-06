@@ -1,58 +1,54 @@
-package entity;
+package com.example.assignment2.entity;
 
 
-import org.springframework.beans.factory.annotation.Autowired;
-import services.DriverService;
+import lombok.EqualsAndHashCode;
 
 import javax.persistence.*;
 
-import static javax.persistence.GenerationType.SEQUENCE;
-
 @Entity
-@Table(name = "Car")
+@Table
+//@EqualsAndHashCode(callSuper = true)
 public class Car {
     @Id
-    @Column(name = "VIN")
     @SequenceGenerator(
             name = "car_sequence",
             sequenceName = "car_sequence",
             allocationSize = 1
     )
     @GeneratedValue(
-            strategy = SEQUENCE,
+            strategy = GenerationType.SEQUENCE,
             generator = "car_sequence"
-
     )
-
-    private String VIN;
-    @Column
+    private Long VIN;
     private String make;
-    @Column
+
     private String model;
-    @Column
+
     private String color;
-    @Column
+
     private String convertible;
-    @Column
+
     private String rating;
-    @Column
+
     private String licencePlate;
-    @Column
+
     private Boolean availability;
-    @Column
+
     private String ratePerKilo;
+
 
     @OneToOne(mappedBy = "car")
     private Driver driver;
-    @Transient
-    @Autowired
-    private DriverService driverService;
 
 
 
-    public Car(String VIN, String make, String model, String color, String convertible, String rating, String licencePlate,
-               Boolean availability, String ratePerKilo, Driver driver) {
-        this.VIN = VIN;
+//    private CarService carService;
+
+
+
+
+    public Car(String make, String model, String color, String convertible, String rating, String licencePlate,
+               Boolean availability, String ratePerKilo) {
         this.make = make;
         this.model = model;
         this.color = color;
@@ -61,36 +57,18 @@ public class Car {
         this.licencePlate = licencePlate;
         this.availability = availability;
         this.ratePerKilo = ratePerKilo;
-        this.driver = driver;
     }
-    public DriverService getDriverService() {
-        return driverService;
-    }
-
-    public void setDriverService(DriverService driverService) {
-        this.driverService = driverService;
-    }
-
 
 
     public Car(){
     }
 
-    public Driver getDriver() {
-        return driver;
-    }
 
-    public void setDriver(Driver driver) {
-        this.driver = driver;
-    }
 
-    public String getVIN() {
+    public Long getVIN() {
         return VIN;
     }
 
-    public void setVIN(String VIN) {
-        this.VIN = VIN;
-    }
 
     public String getMake() {
         return make;
