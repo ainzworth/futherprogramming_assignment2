@@ -21,13 +21,12 @@ import java.util.Optional;
 @Service
 public class CarService {
     public final CarRepository carRepository;
-    private List<Car> results;
 
     @Autowired
     public CarService(CarRepository carRepository){
         this.carRepository = carRepository;
     }
-
+    // read
     public List<Car> getCars(){
         return carRepository.findAll();
     }
@@ -35,7 +34,7 @@ public class CarService {
     public CarRepository getCarRepository() {
         return carRepository;
     }
-
+    // read by make
     public Optional<Car> getCarByMake(String make){
         Optional<Car> carByMake = carRepository.findCarByMake(make);
         if(!carByMake.isPresent()){
@@ -44,7 +43,7 @@ public class CarService {
             return carByMake;
         }
     }
-    // check if make exist, if not add car to list
+    // update (check if make exist, if not add car to list)
     public void addNewCar(Car car){
         Optional<Car> carByMake = carRepository.findCarByMake(car.getLicencePlate());
         if(carByMake.isPresent()){
@@ -52,6 +51,7 @@ public class CarService {
         }
         carRepository.save(car);
     }
+    // update
     @Transactional
     public void updateCar(Long carId,
                           Boolean availability,
@@ -113,6 +113,7 @@ public class CarService {
 
 
     }
+    // delete
     public void deleteCar(Long carId)
     {
         carRepository.findById(carId);

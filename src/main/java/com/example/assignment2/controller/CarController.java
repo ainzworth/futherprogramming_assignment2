@@ -20,22 +20,23 @@ public class CarController {
     public CarController(CarService carService){
         this.carService = carService;
     }
-
-    // get car by make
+    // read
+        // get car by make
     @GetMapping(path = "/make/{make}")
     public Optional<Car> getCarByMake(
             @PathVariable("make") String make
     ){ return carService.getCarByMake(make);}
-    // get all cars
+        // get all cars
     @GetMapping
     public List<Car> getCars(){
         return carService.getCars();
     }
-    //add car to pre_existing list
+    // Create
     @PostMapping
     public void addCar(@RequestBody Car car){
         carService.addNewCar(car);
     }
+    // Update
     @PutMapping(path = "{VIN}")
     public void updateCarById(
             @PathVariable("VIN") Long VIN,

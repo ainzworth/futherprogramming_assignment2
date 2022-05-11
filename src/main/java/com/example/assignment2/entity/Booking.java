@@ -1,63 +1,63 @@
 package com.example.assignment2.entity;
 
 
-import org.springframework.data.annotation.Id;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import org.springframework.data.annotation.Transient;
 
 import javax.persistence.*;
-import java.util.Date;
+import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+
 
 import static javax.persistence.GenerationType.SEQUENCE;
 
 
-//@Entity
-//@Table(name = "booking")
+@Entity
+@Table(name = "booking")
 public class Booking {
-//    @Id
-//    @Column(name = "booking_id")
-//    @SequenceGenerator(
-//            name = "booking_sequence",
-//            sequenceName = "booking_sequence",
-//            allocationSize = 1
-//    )
-//    @GeneratedValue(
-//            strategy = SEQUENCE,
-//            generator = "booking_sequence"
-//
-//    )
+    @Id
+    @SequenceGenerator(
+            name = "booking_sequence",
+            sequenceName = "booking_sequence",
+            allocationSize = 1
+    )
+    @GeneratedValue(
+            strategy = GenerationType.SEQUENCE,
+            generator = "booking_sequence"
+    )
     private Long id;
 
     private String startingLocation;
 
     private String endLocation;
-
-    private Date pickDate;
-
-    private Date dropDate;
+    @JsonFormat(pattern="yyyy-MM-dd HH:mm")
+    private LocalDateTime pickDate;
+    @JsonFormat(pattern="yyyy-MM-dd HH:mm")
+    private LocalDateTime dropDate;
 
     private Double distance;
 
-
-//    @ManyToOne
-//    @JoinColumn(name = "")
-    private Customer customer;
-
-
-//    private Invoice invoice;
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "Invoice_id", referencedColumnName = "invoiceId")
+    private Invoice invoice;
 
 
-    public Booking(Long id,
+    public Booking(
                    String startingLocation,
                    String endLocation,
-                   Date pickDate,
-                   Date dropDate,
-                   Double distance,
-                   Invoice invoice) {
-        this.id = id;
+                   String pickDate,
+                   String dropDate,
+                   Double distance
+                   ) throws Exception {
         this.startingLocation = startingLocation;
         this.endLocation = endLocation;
-        this.pickDate = pickDate;
-        this.dropDate = dropDate;
+        try {
+            this.pickDate = parseStringToLocalDate(pickDate);
+            this.dropDate = parseStringToLocalDate(dropDate);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         this.distance = distance;
 //        this.invoice = invoice;
     }
@@ -90,19 +90,19 @@ public class Booking {
         this.endLocation = endLocation;
     }
 
-    public Date getPickDate() {
+    public LocalDateTime getPickDate() {
         return pickDate;
     }
 
-    public void setPickDate(Date pickDate) {
+    public void setPickDate(LocalDateTime pickDate) {
         this.pickDate = pickDate;
     }
 
-    public Date getDropDate() {
+    public LocalDateTime getDropDate() {
         return dropDate;
     }
 
-    public void setDropDate(Date dropDate) {
+    public void setDropDate(LocalDateTime dropDate) {
         this.dropDate = dropDate;
     }
 
@@ -112,6 +112,13 @@ public class Booking {
 
     public void setDistance(Double distance) {
         this.distance = distance;
+    }
+
+
+    public LocalDateTime parseStringToLocalDate(String timeString)throws Exception {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+        LocalDateTime dateTime = LocalDateTime.parse(timeString,formatter);
+        return dateTime;
     }
 
 //    public Invoice getInvoice() {

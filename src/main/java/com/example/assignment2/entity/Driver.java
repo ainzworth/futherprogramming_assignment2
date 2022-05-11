@@ -1,6 +1,12 @@
 package com.example.assignment2.entity;
 
+
+
 import javax.persistence.*;
+import javax.transaction.Transactional;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table
@@ -15,11 +21,14 @@ public class Driver {
             strategy = GenerationType.SEQUENCE,
             generator = "driver_sequence"
     )
-
-    private Long id;
+    private Long driverId;
     private String licenceNum;
     private String phoneNumber;
     private double rating;
+
+    @OneToMany(mappedBy = "driver", cascade = CascadeType.ALL,
+            orphanRemoval = true,fetch = FetchType.EAGER)
+    private Set<Invoice> invoices = new HashSet<>();
 
 
     @OneToOne(cascade = CascadeType.ALL)
@@ -46,11 +55,11 @@ public class Driver {
 
 
     public Long getId() {
-        return id;
+        return driverId;
     }
 
     public void setId(Long id) {
-        this.id = id;
+        this.driverId = id;
     }
 
     public String getLicenceNum() {
@@ -75,5 +84,18 @@ public class Driver {
 
     public void setRating(double rating) {
         this.rating = rating;
+    }
+    public Set<Invoice> getInvoices(){
+        return this.invoices;
+    }
+    public void setInvoices(Set<Invoice> invoices){
+        this.invoices = invoices;
+    }
+    @Transactional
+    public void addInvoice(Invoice invoice){
+        Set<Invoice> newInvoices = this.invoices;
+        invoice.setDriver(this);
+        newInvoices.add(invoice);
+        setInvoices(newInvoices);
     }
 }

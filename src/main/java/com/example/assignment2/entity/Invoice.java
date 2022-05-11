@@ -1,35 +1,56 @@
 package com.example.assignment2.entity;
+import javax.persistence.*;
+import javax.persistence.criteria.CriteriaBuilder;
 
-//@Entity
-//@Table(name = "Invoice")
+@Entity
+@Table
 public class Invoice {
 
-    private Long id;
+    @Id
+    @SequenceGenerator(
+            name = "invoice_sequence",
+            sequenceName = "invoice_sequence",
+            allocationSize = 1
+    )
+    @GeneratedValue(
+            strategy = GenerationType.SEQUENCE,
+            generator = "invoice_sequence"
+    )
+    private Long invoiceId;
 
+    @ManyToOne
+    @JoinColumn(
+            name = "customerId",
+            insertable = false,
+            updatable = false,
+            referencedColumnName = "customerId"
+    )
     private Customer customer;
-
+    @ManyToOne
+    @JoinColumn(
+            name = "driverId",
+            insertable = false,
+            updatable = false,
+            referencedColumnName = "driverId"
+    )
     private Driver driver;
     private double totalChange;
 
+    @OneToOne(mappedBy = "invoice")
     private Booking booking;
-
-    public Invoice(Long id, Customer customer, Driver driver, double totalChange) {
-        this.id = id;
-        this.customer = customer;
+    public Invoice(){};
+    public Invoice(Driver driver,Customer customer) {
         this.driver = driver;
-        this.totalChange = totalChange;
-    }
-
-    public Invoice() {
-
+        this.customer = customer;
+        this.totalChange = 100;
     }
 
     public Long getId() {
-        return id;
+        return invoiceId;
     }
 
     public void setId(Long id) {
-        this.id = id;
+        this.invoiceId = id;
     }
 
     public Customer getCustomer() {
