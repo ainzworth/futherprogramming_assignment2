@@ -20,6 +20,10 @@ public interface CarRepository extends JpaRepository<Car,Long> {
     @Query("SELECT c FROM Car c where c.licencePlate = ?1")
     Optional<Car> findCarByLicencePlate(String licencePlate);
 
+    @Query("SELECT c FROM Car c where c.licencePlate = ?1")
+    Boolean selectCarByLicencePlate(String licencePlate);
+
+
 
 
 }

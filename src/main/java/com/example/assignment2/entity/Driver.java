@@ -2,12 +2,15 @@ package com.example.assignment2.entity;
 
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import lombok.Builder;
+
 import javax.persistence.*;
 import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
-
 @Entity
 @Table
 public class Driver {
@@ -25,9 +28,10 @@ public class Driver {
     private String licenceNum;
     private String phoneNumber;
     private double rating;
-
-    @OneToMany(mappedBy = "driver", cascade = CascadeType.ALL,
+    @JsonIgnore
+    @OneToMany(cascade = CascadeType.ALL,
             orphanRemoval = true,fetch = FetchType.EAGER)
+    @JoinColumn(name = "driver_id")
     private Set<Invoice> invoices = new HashSet<>();
 
 

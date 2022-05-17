@@ -1,10 +1,13 @@
 package com.example.assignment2.entity;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import javax.persistence.criteria.CriteriaBuilder;
 
 @Entity
 @Table
-public class Invoice {
+public class Invoice{
 
     @Id
     @SequenceGenerator(
@@ -18,31 +21,41 @@ public class Invoice {
     )
     private Long invoiceId;
 
+
     @ManyToOne
     @JoinColumn(
-            name = "customerId",
+            name = "customer_id",
             insertable = false,
-            updatable = false,
-            referencedColumnName = "customerId"
+            updatable = false
     )
     private Customer customer;
+
     @ManyToOne
     @JoinColumn(
-            name = "driverId",
+            name = "driver_id",
             insertable = false,
-            updatable = false,
-            referencedColumnName = "driverId"
+            updatable = false
     )
     private Driver driver;
     private double totalChange;
 
     @OneToOne(mappedBy = "invoice")
     private Booking booking;
-    public Invoice(){};
-    public Invoice(Driver driver,Customer customer) {
+    public Invoice(double totalChange){
+        this.totalChange = totalChange;
+    };
+    public Invoice(Driver driver,Customer customer,double totalChange) {
         this.driver = driver;
         this.customer = customer;
-        this.totalChange = 100;
+        this.totalChange = totalChange;
+    }
+    @Transient
+    private Long customerId;
+    @Transient
+    private Long driverId;
+
+    public Invoice() {
+
     }
 
     public Long getId() {
@@ -75,5 +88,21 @@ public class Invoice {
 
     public void setTotalChange(double totalChange) {
         this.totalChange = totalChange;
+    }
+
+    public Long getCustomerId() {
+        return customerId;
+    }
+
+    public void setCustomerId(Long customerId) {
+        this.customerId = customerId;
+    }
+
+    public Long getDriverId() {
+        return driverId;
+    }
+
+    public void setDriverId(Long driverId) {
+        this.driverId = driverId;
     }
 }

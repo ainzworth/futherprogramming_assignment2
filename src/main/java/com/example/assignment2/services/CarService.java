@@ -35,18 +35,18 @@ public class CarService {
         return carRepository;
     }
     // read by make
-    public Optional<Car> getCarByMake(String make){
-        Optional<Car> carByMake = carRepository.findCarByMake(make);
-        if(!carByMake.isPresent()){
-            throw new IllegalStateException("cant find car with this make");
-        }else{
-            return carByMake;
-        }
-    }
+//    public Optional<Car> getCarByMake(String make){
+//        Optional<Car> carByMake = carRepository.findCarByMake(make);
+//        if(!carByMake.isPresent()){
+//            throw new IllegalStateException("cant find car with this make");
+//        }else{
+//            return carByMake;
+//        }
+//    }
     // update (check if make exist, if not add car to list)
     public void addNewCar(Car car){
-        Optional<Car> carByMake = carRepository.findCarByMake(car.getLicencePlate());
-        if(carByMake.isPresent()){
+        boolean carByMake = carRepository.selectCarByLicencePlate(car.getLicencePlate());
+        if(carByMake){
             throw new IllegalStateException("Licence plate already exist");
         }
         carRepository.save(car);

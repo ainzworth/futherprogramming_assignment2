@@ -21,11 +21,6 @@ public class CarController {
         this.carService = carService;
     }
     // read
-        // get car by make
-    @GetMapping(path = "/make/{make}")
-    public Optional<Car> getCarByMake(
-            @PathVariable("make") String make
-    ){ return carService.getCarByMake(make);}
         // get all cars
     @GetMapping
     public List<Car> getCars(){

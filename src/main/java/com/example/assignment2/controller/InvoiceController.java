@@ -24,14 +24,24 @@ public class InvoiceController {
         return invoiceService.findInvoices();
     }
     // create
-    @PostMapping
-    public void addInvoice(@RequestBody Invoice invoice){
-        invoiceService.addInvoice(invoice);
+    @PostMapping(path = "createInvoice")
+    public void addInvoice(
+            @RequestBody Invoice invoice
+            ){
+        invoiceService.addInvoice(invoice,invoice.getDriverId(),invoice.getCustomerId());
     }
     // update
-        // add later
+        @PutMapping(path ="update/{invoiceId}")
+        public void updateInvoice(
+                @PathVariable("invoiceId") Long invoiceId,
+                @RequestParam(required = false) Long customerId,
+                @RequestParam(required = false) Long driverId,
+                @RequestParam(required = false) Double totalChange
+        ){
+            invoiceService.updateInvoice(invoiceId,customerId,driverId,totalChange);
+        }
     // delete
-    @DeleteMapping(path = "{id}")
+    @DeleteMapping(path = "delete/{id}")
     public void deleteInvoice(
             @PathVariable("id") Long id
     ){

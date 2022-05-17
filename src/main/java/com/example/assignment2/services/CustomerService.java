@@ -20,27 +20,35 @@ import java.util.Set;
 public class CustomerService {
     private final CustomerRepository customerRepository;
 
-    private final DriverRepository driverRepository;
-
-    private final InvoiceRepository invoiceRepository;
     @Autowired
-    CustomerService(CustomerRepository customerRepository,DriverRepository driverRepository,InvoiceRepository invoiceRepository){
+    CustomerService(CustomerRepository customerRepository){
         this.customerRepository = customerRepository;
-        this.driverRepository = driverRepository;
-        this.invoiceRepository = invoiceRepository;
     }
 
     // read
     public List<Customer> getCustomers(){
         return customerRepository.findAll();
     }
+        // get customer by name
+        public List<Customer> getCustomersByName(String name) {
+            return customerRepository.findAllCustomerByName(name);
+        }
+        // get customer by address
+        public List<Customer> getCustomersByAddress(String address) {
+            return  customerRepository.findAllCustomerByAddress(address);
+        }
+        // get customer by phone
+
+        public List<Customer> getCustomersByPhone(String phone) {
+            return customerRepository.findAllCustomerByPhone(phone);
+        }
     // create
     public void addCustomer(Customer customer) {
-        Optional<Customer> cs = customerRepository.findCustomerByCustomer_id(customer.getCustomerNum());
+        Optional<Customer> cs = customerRepository.findCustomerByPhone(customer.getPhone());
         // if customer id exist throw
         if(cs.isPresent()){
                 throw new IllegalStateException(
-                        "Customer with customer id " + customer.getCustomerNum() + " already existed"
+                        "Customer with Phone " + customer.getPhone() + " already existed"
                 );
         }
         // else save customer
@@ -48,18 +56,22 @@ public class CustomerService {
     }
     // update
     @Transactional
-    public void updateCustomer(Long customerId, String customerNum, String name) {
+    public void updateCustomer(Long customerId, String address,String phone, String name) {
         Customer cs = customerRepository.findById(customerId).orElseThrow(
                 () -> new IllegalStateException("customer with id " + customerId +" does not exist")
         );
-        if(customerNum != null &&
-            !Objects.equals(customerNum,cs.getCustomerNum())){
+        if(address != null &&
+            !Objects.equals(address,cs.getAddress())){
+            cs.setAddress(address);
+        }
+        if(phone != null &&
+            !Objects.equals(phone,cs.getPhone())){
             // check if customerNum is dup
-            Optional<Customer> optionalCustomer = customerRepository.findCustomerByCustomer_id(customerNum);
+            Optional<Customer> optionalCustomer = customerRepository.findCustomerByPhone(phone);
             if(optionalCustomer.isPresent()){
                 throw new IllegalStateException("Customer number already exist");
             }
-            cs.setCustomer_id(customerNum);
+            cs.setPhone(phone);
         }
         if(name != null &&
                 !Objects.equals(name,cs.getName())){
@@ -67,26 +79,7 @@ public class CustomerService {
         }
     }
         // create invoice
-    @Transactional
-    public void createInvoice(Long customerId,Long driverId) {
-                Invoice invoice = new Invoice();
-                Customer cs = customerRepository.findById(customerId).
-                        orElseThrow(() -> new IllegalStateException("customer with id "+ customerId +" does not exist")
-                );
-                Driver driver = driverRepository.findById(driverId).
-                        orElseThrow(() -> new IllegalStateException("driver with id "+ driverId +" does not exist")
-                        );
-                invoice.setCustomer(cs);
-                invoice.setDriver(driver);
-                cs.getInvoices().add(invoice);
-                driver.getInvoices().add(invoice);
 
-                // add invoice to list of invoices in customer and set customer value in invoice, same thing for driver
-
-
-
-
-        }
 
 
     // delete

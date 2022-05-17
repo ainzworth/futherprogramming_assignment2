@@ -11,7 +11,7 @@ import java.time.ZonedDateTime;
 @MappedSuperclass
 public class BaseEntity {
     @CreationTimestamp
-    private ZonedDateTime createdAt;
+    private ZonedDateTime createdAt = null;
     @UpdateTimestamp
-    private ZonedDateTime updatedAt;
+    private ZonedDateTime updatedAt = null;
 }

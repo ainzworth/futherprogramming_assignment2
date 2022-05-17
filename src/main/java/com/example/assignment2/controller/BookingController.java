@@ -22,25 +22,29 @@ public class BookingController {
     public List<Booking> getBookings(){
         return bookingService.getBookings();
     }
+        // read booking by date
     // create booking
-    @PostMapping
+    @PostMapping(path = "create")
     public void addBooking(@RequestBody Booking booking){
          bookingService.addNewBooking(booking);
     }
+
     // update
-//    @PutMapping(path = "{id}")
-//    public void updateBooking(
-//            @PathVariable("id")Long id,
-//            @RequestParam(required = false) double distance,
-//            @RequestParam(required = false) String end_location,
-//            @RequestParam(required = false) String starting_location,
-//            @RequestParam(required = false) String starting_location,
-//            @RequestParam(required = false) String starting_location,
-//    ){
-//
-//    }
+    @PutMapping(path = "update/{id}")
+    public void updateBooking(
+            @PathVariable("id")Long id,
+            @RequestParam(required = false) Double distance,
+            @RequestParam(required = false) String end_location,
+            @RequestParam(required = false) String starting_location,
+            @RequestParam(required = false) String pickDate,
+            @RequestParam(required = false) String dropDate,
+            @RequestParam(required = false) Long invoiceId
+
+            ) throws Exception {
+        bookingService.updateBooking(id,distance,end_location,starting_location,pickDate,dropDate,invoiceId);
+    }
     // delete
-    @DeleteMapping(path = "{id}")
+    @DeleteMapping(path = "delete/{id}")
     public void deleteBooking(@PathVariable("id") Long id){
         bookingService.deleteBooking(id);
     }

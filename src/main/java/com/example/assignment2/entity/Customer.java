@@ -1,5 +1,8 @@
 package com.example.assignment2.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 
@@ -27,11 +30,16 @@ public class Customer {
     @Column(
             nullable = false
     )
-    private String customerNum;
     private String name;
 
-    @OneToMany(mappedBy = "customer",  cascade = CascadeType.ALL,
+    private String phone;
+
+    private String address;
+    @JsonIgnore
+    @OneToMany(cascade = CascadeType.ALL,
             orphanRemoval = true,fetch = FetchType.EAGER)
+    @JoinColumn(
+            name = "customer_id")
     private Set<Invoice> invoices = new HashSet<>();
 
 
@@ -40,18 +48,13 @@ public class Customer {
 
     }
 
-    public Customer(String customer_id, String name) {
-        this.customerNum = customer_id;
+    public Customer(String address,String phone, String name) {
+        this.address = address;
+        this.phone = phone;
         this.name = name;
     }
 
-    public String getCustomerNum() {
-        return customerNum;
-    }
 
-    public void setCustomer_id(String customerNum) {
-        this.customerNum = customerNum;
-    }
 
     public Long getId() {
         return customerId;
@@ -74,6 +77,22 @@ public class Customer {
     }
     public void setInvoices(Set<Invoice> invoices){
         this.invoices = invoices;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
     }
 
     @Transactional

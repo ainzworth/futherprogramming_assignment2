@@ -36,15 +36,17 @@ public class AppConfig{
             driverRepository.saveAll(
                     List.of(driver1,driver2));
 
-            Booking booking1 = new Booking("hcm","ha noi","2017-02-02 08:59","2017-02-02 08:59", 100.0);
+            Booking booking1 = new Booking("hcm","ha noi","2017-02-02 08:59","2017-02-02 10:59", 100.0);
 
             bookingRepository.saveAll(
                     List.of(booking1)
             );
-            Customer customer1 = new Customer("123","customer1");
+            Customer customer1 = new Customer("Green street 12","012012","customer1");
+            Customer customer2 = new Customer("dark street 12","090009","customer1");
+            Customer customer3 = new Customer("Green street 12","012012","customer3");
 
             customerRepository.saveAll(
-                    List.of(customer1)
+                    List.of(customer1,customer2,customer3)
             );
 
 

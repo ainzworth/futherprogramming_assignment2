@@ -2,7 +2,6 @@ package com.example.assignment2.entity;
 
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import org.springframework.data.annotation.Transient;
 
 import javax.persistence.*;
 import java.text.SimpleDateFormat;
@@ -15,7 +14,7 @@ import static javax.persistence.GenerationType.SEQUENCE;
 
 @Entity
 @Table(name = "booking")
-public class Booking {
+public class Booking extends BaseEntity {
     @Id
     @SequenceGenerator(
             name = "booking_sequence",
@@ -41,8 +40,10 @@ public class Booking {
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "Invoice_id", referencedColumnName = "invoiceId")
     private Invoice invoice;
-
-
+    @Transient
+    private Long customerId;
+    @Transient
+    private Long driverId;
     public Booking(
                    String startingLocation,
                    String endLocation,
@@ -94,16 +95,16 @@ public class Booking {
         return pickDate;
     }
 
-    public void setPickDate(LocalDateTime pickDate) {
-        this.pickDate = pickDate;
+    public void setPickDate(String pickDate) throws Exception {
+        this.pickDate = parseStringToLocalDate(pickDate);
     }
 
     public LocalDateTime getDropDate() {
         return dropDate;
     }
 
-    public void setDropDate(LocalDateTime dropDate) {
-        this.dropDate = dropDate;
+    public void setDropDate(String dropDate) throws Exception {
+        this.dropDate =parseStringToLocalDate(dropDate);
     }
 
     public Double getDistance() {
@@ -114,18 +115,37 @@ public class Booking {
         this.distance = distance;
     }
 
+    public Long getCustomerId() {
+        return customerId;
+    }
+
+    public void setCustomerId(Long customerId) {
+        this.customerId = customerId;
+    }
+
+    public Long getDriverId() {
+        return driverId;
+    }
+
+    public void setDriverId(Long driverId) {
+        this.driverId = driverId;
+    }
 
     public LocalDateTime parseStringToLocalDate(String timeString)throws Exception {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
         LocalDateTime dateTime = LocalDateTime.parse(timeString,formatter);
         return dateTime;
     }
+    public String localDateToString(LocalDateTime dateTime)throws Exception{
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+        return dateTime.format(formatter);
+    }
 
-//    public Invoice getInvoice() {
-//        return invoice;
-//    }
-//
-//    public void setInvoice(Invoice invoice) {
-//        this.invoice = invoice;
-//    }
+   public Invoice getInvoice() {
+       return invoice;
+   }
+
+    public void setInvoice(Invoice invoice) {
+        this.invoice = invoice;
+    }
 }
